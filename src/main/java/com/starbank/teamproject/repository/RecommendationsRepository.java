@@ -28,6 +28,19 @@ public class RecommendationsRepository {
         return result > 0;
     }
 
+    public boolean CheckProductNONExistencesByType(UUID user, String productType) {
+        Integer result = jdbcTemplate.queryForObject(
+                """
+                        SELECT COUNT(*)
+                        FROM transactions t
+                        JOIN products p ON t.product_id = p.id
+                        WHERE t.user_id = ?
+                          AND p.type <> ?
+                        """,
+                Integer.class, user, productType);
+        return result > 0;
+    }
+
     public Integer CheckSumTransactionByTransactionTypeAndByProductType(UUID user, String transactionType, String productType) {
         Integer result = jdbcTemplate.queryForObject(
                 """
