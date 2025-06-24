@@ -4,6 +4,7 @@ import com.starbank.teamproject.entity.Rule;
 import com.starbank.teamproject.model.DynamicRule;
 import com.starbank.teamproject.repository.RecommendationsRepository;
 import com.starbank.teamproject.repository.RuleRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class RuleService {
     }
 
     // Проверяет правила относительно конкретного пользователя и возвращает динамические правила, соответствующие данному пользователю
+    @Cacheable("users")
     public Collection<DynamicRule> getAllRulesCheckByUserId(UUID uuid) {
         List<Rule> rules = ruleRepository.findAll();
         Collection<DynamicRule> result = new ArrayList<>();
