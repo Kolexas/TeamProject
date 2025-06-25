@@ -26,6 +26,7 @@ public class RuleApiController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteRule(@PathVariable Long id) {
+        ruleService.deleteRule(id);
         return ResponseEntity.ok("204 No content");
     }
 

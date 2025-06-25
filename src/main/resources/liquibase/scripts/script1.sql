@@ -7,6 +7,6 @@ create table if not exists rule
     id   serial,
     product_id  uuid,
     product_name varchar(255),
-    product_name text,
+    product_text text,
     rule bytea[]
     );
