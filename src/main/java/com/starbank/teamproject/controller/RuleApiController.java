@@ -1,6 +1,7 @@
 package com.starbank.teamproject.controller;
 
 import com.starbank.teamproject.entity.Rule;
+import com.starbank.teamproject.entity.RuleDTO;
 import com.starbank.teamproject.model.DynamicRule;
 import com.starbank.teamproject.service.RuleService;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class RuleApiController {
     }
 
     @GetMapping("/getAll")
-    public Collection<Rule> getAllRules() {
+    public Collection<RuleDTO> getAllRules() {
         return ruleService.getAllRules();
     }
 

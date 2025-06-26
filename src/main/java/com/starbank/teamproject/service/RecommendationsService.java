@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class RecommendationsService {
-    private  RecommendationsRepository recommendationsRepository;
-    private  List<RecommendationRuleSet> recommendationRuleSets; // Inject a list of rule sets
+    private RecommendationsRepository recommendationsRepository;
+    private List<RecommendationRuleSet> recommendationRuleSets; // Inject a list of rule sets
 
     public RecommendationsService(RecommendationsRepository recommendationsRepository, List<RecommendationRuleSet> recommendationRuleSets) { // Inject the list
         this.recommendationsRepository = recommendationsRepository;

@@ -1,6 +1,7 @@
 package com.starbank.teamproject.service;
 
 import com.starbank.teamproject.entity.Rule;
+import com.starbank.teamproject.entity.RuleDTO;
 import com.starbank.teamproject.model.DynamicRule;
 import com.starbank.teamproject.repository.RecommendationsRepository;
 import com.starbank.teamproject.repository.RuleRepository;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class RuleService {
@@ -35,8 +37,11 @@ public class RuleService {
         ruleRepository.deleteById(id);
     }
 
-    public Collection<Rule> getAllRules() {
-        return ruleRepository.findAll();
+    public Collection<RuleDTO> getAllRules() {
+        List<Rule> rules = ruleRepository.findAll();
+        return rules.stream()
+                .map(RuleDTO::fromRule)  // Преобразуем каждый Rule в RuleDTO
+                .collect(Collectors.toList());
     }
 
     // Проверяет правила относительно конкретного пользователя и возвращает динамические правила, соответствующие данному пользователю
@@ -54,7 +59,6 @@ public class RuleService {
             DynamicRule[] dynamicRulesArray = rule.getRule();
 
 
-
             for (DynamicRule dynamicRule : dynamicRulesArray) {
                 if (processUserOfRule(dynamicRule, uuid)) {
                     result.add(dynamicRule);
@@ -70,14 +74,11 @@ public class RuleService {
                 }
             }
 
-            if(checkRule1 && checkRule2 && checkRule3) {
+            if (checkRule1 && checkRule2 && checkRule3) {
                 return result;
+            }
         }
-
-
-
-
-        } return null;
+        return null;
     }
 
     // Обработчик правила USER_OF

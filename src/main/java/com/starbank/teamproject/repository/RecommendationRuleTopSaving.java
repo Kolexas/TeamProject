@@ -16,13 +16,13 @@ public class RecommendationRuleTopSaving implements RecommendationRuleSet {
 
     @Override
     public Optional<RecommendationDTO> CheckRule(UUID userId) {
-        boolean first_Rule = recommendationsRepository.CheckProductExistencesByType(userId, "DEBIT");
-        Boolean second_RuleFirstPart = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "DEPOSIT", "DEBIT") > 50_000;
-        Boolean second_RuleSecondPart = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "DEPOSIT", "SAVING") > 50_000;
-        Integer third_RuleSavingSum = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "DEPOSIT", "DEBIT");
-        Integer third_RuleWithdrawSum = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "WITHDRAW", "DEBIT");
-        boolean Third_Rule = third_RuleSavingSum - third_RuleWithdrawSum > 0;
-        if (first_Rule && (second_RuleFirstPart || second_RuleSecondPart) && Third_Rule) {
+        boolean firstRule = recommendationsRepository.CheckProductExistencesByType(userId, "DEBIT");
+        Boolean secondRuleFirstPart = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "DEPOSIT", "DEBIT") > 50_000;
+        Boolean secondRuleSecondPart = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "DEPOSIT", "SAVING") > 50_000;
+        Integer thirdRuleSavingSum = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "DEPOSIT", "DEBIT");
+        Integer thirdRuleWithdrawSum = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "WITHDRAW", "DEBIT");
+        boolean thirdRule = thirdRuleSavingSum - thirdRuleWithdrawSum > 0;
+        if (firstRule && (secondRuleFirstPart || secondRuleSecondPart) && thirdRule) {
             return Optional.of(new RecommendationDTO(userId, "TopSaving", "Откройте свою собственную «Копилку» c нашим банком! «Копилка» - это уникальный банковский инструмент, " +
                     "который поможет вам легко и удобно накапливать деньги на важные цели. Больше никаких забытый чеков и потерянных квитанций - всё под контролем!" +
                     "Преимущества «Копилки». " +

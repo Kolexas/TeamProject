@@ -13,12 +13,12 @@ public class Rule {
     @GeneratedValue
     private Long id;
 
-    private String product_name;
+    private String productName;
 
-    private UUID product_id;
+    private UUID productId;
 
-    @Column(columnDefinition="TEXT")
-    private String product_text;
+    @Column(columnDefinition = "TEXT")
+    private String productText;
 
     private DynamicRule[] rule;
 
@@ -26,10 +26,10 @@ public class Rule {
 
     }
 
-    public Rule(String product_name, UUID product_id, String product_text, DynamicRule[] rule) {
-        this.product_name = product_name;
-        this.product_id = product_id;
-        this.product_text = product_text;
+    public Rule(String productName, UUID productId, String productText, DynamicRule[] rule) {
+        this.productName = productName;
+        this.productId = productId;
+        this.productText = productText;
         this.rule = rule;
     }
 
@@ -49,27 +49,27 @@ public class Rule {
         this.id = id;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public UUID getProduct_id() {
-        return product_id;
+    public UUID getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(UUID product_id) {
-        this.product_id = product_id;
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
-    public String getProduct_text() {
-        return product_text;
+    public String getProductText() {
+        return productText;
     }
 
-    public void setProduct_text(String product_text) {
-        this.product_text = product_text;
+    public void setProductText(String productText) {
+        this.productText = productText;
     }
 }
