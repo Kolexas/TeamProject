@@ -17,12 +17,12 @@ public class RecommendationRuleInvest500 implements RecommendationRuleSet {
 
     @Override
     public Optional<RecommendationDTO> CheckRule(UUID userId) {
-        boolean First_Rule = recommendationsRepository.CheckProductExistencesByType(userId, "DEBIT");
-        boolean Second_Rule = recommendationsRepository.CheckProductExistencesByType(userId, "INVEST");
-        boolean Third_Rule = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "DEPOSIT", "SAVING") > 1_000;
+        boolean firstRule = recommendationsRepository.CheckProductExistencesByType(userId, "DEBIT");
+        boolean secondRule = recommendationsRepository.CheckProductExistencesByType(userId, "INVEST");
+        boolean thirdRule = recommendationsRepository.CheckSumTransactionByTransactionTypeAndByProductType(userId, "DEPOSIT", "SAVING") > 1_000;
 
 
-        if (First_Rule && !Second_Rule && Third_Rule) {
+        if (firstRule && !secondRule && thirdRule) {
             return Optional.of(new RecommendationDTO(userId, "Invest 500", "Откройте свой путь к успеху с индивидуальным инвестиционным счетом (ИИС) от нашего банка! " +
                     "Воспользуйтесь налоговыми льготами и начните инвестировать с умом. Пополните счет до конца года и получите выгоду в виде вычета на взнос в следующем налоговом " +
                     "периоде. Не упустите возможность разнообразить свой портфель, снизить риски и следить за актуальными рыночными тенденциями. Откройте ИИС сегодня и станьте ближе к финансовой независимости!"));

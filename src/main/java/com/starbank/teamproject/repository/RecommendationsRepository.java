@@ -1,6 +1,7 @@
 package com.starbank.teamproject.repository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,12 +16,13 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Cacheable("users")
     public boolean CheckProductExistencesByType(UUID user, String productType) {
         Integer result = jdbcTemplate.queryForObject(
                 """
                         SELECT COUNT(*)
                         FROM transactions t
-                        JOIN products p ON t.product_id = p.id
+                        JOIN products p ON t.productId = p.id
                         WHERE t.user_id = ?
                           AND p.type = ?
                         """,
@@ -28,6 +30,21 @@ public class RecommendationsRepository {
         return result > 0;
     }
 
+    @Cacheable("users")
+    public boolean CheckProductNONExistencesByType(UUID user, String productType) {
+        Integer result = jdbcTemplate.queryForObject(
+                """
+                        SELECT COUNT(*)
+                        FROM transactions t
+                        JOIN products p ON t.productId = p.id
+                        WHERE t.user_id = ?
+                          AND p.type <> ?
+                        """,
+                Integer.class, user, productType);
+        return result > 0;
+    }
+
+    @Cacheable("users")
     public Integer CheckSumTransactionByTransactionTypeAndByProductType(UUID user, String transactionType, String productType) {
         Integer result = jdbcTemplate.queryForObject(
                 """
@@ -39,7 +56,7 @@ public class RecommendationsRepository {
                         AND t."TYPE" = ?
                         AND p."TYPE"  = ?
                         """,
-                Integer.class, user,transactionType,productType);
+                Integer.class, user, transactionType, productType);
         return result;
     }
 }
