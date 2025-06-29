@@ -22,7 +22,7 @@ public class RecommendationsRepository {
                 """
                         SELECT COUNT(*)
                         FROM transactions t
-                        JOIN products p ON t.productId = p.id
+                        JOIN products p ON t.PRODUCT_ID = p.id
                         WHERE t.user_id = ?
                           AND p.type = ?
                         """,
@@ -36,7 +36,7 @@ public class RecommendationsRepository {
                 """
                         SELECT COUNT(*)
                         FROM transactions t
-                        JOIN products p ON t.productId = p.id
+                        JOIN products p ON t.PRODUCT_ID = p.id
                         WHERE t.user_id = ?
                           AND p.type <> ?
                         """,
