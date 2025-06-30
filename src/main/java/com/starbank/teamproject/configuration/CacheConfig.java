@@ -6,18 +6,29 @@ import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.imageio.plugins.tiff.TIFFDirectory;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class CacheConfig {
+    private CacheManager cacheManager;
+
     @Bean
     public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("users");
-        cacheManager.setCaffeine(Caffeine.newBuilder()
+        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager("users");
+        caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
                 .expireAfterWrite(20, TimeUnit.MINUTES)
                 .maximumSize(100)
         );
-        return cacheManager;
+        this.cacheManager = caffeineCacheManager;
+        return caffeineCacheManager;
+    }
+
+    public void clearAllCaches() {
+        cacheManager.getCacheNames().forEach(name -> {
+            var cache = cacheManager.getCache(name);
+            if (cache != null) {
+                cache.clear();
+            }
+        });
     }
 }
