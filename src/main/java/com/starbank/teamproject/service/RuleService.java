@@ -89,7 +89,7 @@ public class RuleService {
     }
 
     public void incrementExecutionCounter(Rule rule) {
-        Optional<Statistics> statsOptional = statisticsRepository.findById(rule.getId());
+        Optional<Statistics> statsOptional = statisticsRepository.findByRuleId(rule.getId());
 
         if (statsOptional.isPresent()) {
             Statistics stats = statsOptional.get();
