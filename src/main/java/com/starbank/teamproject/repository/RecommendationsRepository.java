@@ -21,7 +21,7 @@ public class RecommendationsRepository {
         Integer result = jdbcTemplate.queryForObject(
                 """
                         SELECT COUNT(*)
-                        FROM transactions t
+                        FROM transactions t                     
                         JOIN PRODUCTS p ON t.PRODUCT_ID = p.id
                         WHERE t.user_id = ?
                           AND p.type = ?
