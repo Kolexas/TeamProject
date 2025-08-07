@@ -2,16 +2,15 @@ package com.starbank.teamproject.service;
 
 import com.starbank.teamproject.entity.Rule;
 import com.starbank.teamproject.entity.RuleDTO;
+import com.starbank.teamproject.entity.Statistics;
 import com.starbank.teamproject.model.DynamicRule;
 import com.starbank.teamproject.repository.RecommendationsRepository;
 import com.starbank.teamproject.repository.RuleRepository;
+import com.starbank.teamproject.repository.StatisticsRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,13 +19,15 @@ public class RuleService {
     private final RuleRepository ruleRepository;
     private final RecommendationsRepository recommendationsRepository;
 
+    private final StatisticsRepository statisticsRepository;
     public static final String USER_OF = "USER_OF";
     public static final String TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW = "TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW";
     public static final String TRANSACTION_SUM_COMPARE = "TRANSACTION_SUM_COMPARE";
 
-    public RuleService(RuleRepository ruleRepository, RecommendationsRepository recommendationsRepository) {
+    public RuleService(RuleRepository ruleRepository, RecommendationsRepository recommendationsRepository, StatisticsRepository statisticsRepository) {
         this.ruleRepository = ruleRepository;
         this.recommendationsRepository = recommendationsRepository;
+        this.statisticsRepository = statisticsRepository;
     }
 
     public Rule addRule(Rule rule) {
@@ -75,10 +76,32 @@ public class RuleService {
             }
 
             if (checkRule1 && checkRule2 && checkRule3) {
+                incrementExecutionCounter(rule);
                 return result;
             }
         }
         return null;
+    }
+
+    public Collection<Statistics> getStats() {
+        List<Statistics> all = statisticsRepository.findAll();
+        return all;
+    }
+
+    public void incrementExecutionCounter(Rule rule) {
+        Optional<Statistics> statsOptional = statisticsRepository.findByRuleId(rule.getId());
+
+        if (statsOptional.isPresent()) {
+            Statistics stats = statsOptional.get();
+            stats.setCount(stats.getCount() + 1);
+            statisticsRepository.save(stats);
+        } else {
+            Statistics newStats = new Statistics();
+            newStats.setRule(rule);
+            newStats.setCount(1L);
+            statisticsRepository.save(newStats);
+
+        }
     }
 
     // Обработчик правила USER_OF
