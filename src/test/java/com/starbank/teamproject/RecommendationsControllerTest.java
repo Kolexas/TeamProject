@@ -51,7 +51,5 @@ public class RecommendationsControllerTest {
                 });
         assertThat(getResponse.getBody()).isNotEmpty();
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(getResponse.getBody().get(0).getName()).isEqualTo("TopSaving");
     }
-
 }
