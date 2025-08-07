@@ -1,0 +1,94 @@
+
+openapi: 3.0.1
+info:
+  title: Recommendation API
+  version: 1.0.0
+  description: REST API для рекомендаций и управления правилами
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /recommendations:
+    get:
+      summary: Получить рекомендации
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: Идентификатор пользователя
+      responses:
+        '200':
+          description: Список рекомендаций
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecommendationDTO'
+
+  /rules:
+    get:
+      summary: Получить все динамические правила
+      responses:
+        '200':
+          description: Массив правил
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RuleDTO'
+
+    post:
+      summary: Создать новое правило
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RuleDTO'
+      responses:
+        '201':
+          description: Правило создано
+
+  /rules/{id}:
+    delete:
+      summary: Удалить правило по ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Успешно удалено
+
+  /cache/clear:
+    post:
+      summary: Очистка кэша
+      responses:
+        '200':
+          description: Кэш очищен
+
+components:
+  schemas:
+    RecommendationDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+
+    RuleDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        condition:
+          type: string
